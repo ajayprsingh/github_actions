@@ -6,6 +6,7 @@ jobs:
   assemble_release:
     name: Assemble Release Apk
     runs-on: macos-10.15
+
     steps:
       - name: CheckOut Current Branch
         uses: actions/checkout@v2
