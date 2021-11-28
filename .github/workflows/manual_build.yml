@@ -19,11 +19,21 @@ jobs:
       - name: Assemble Release App
         run : ./gradlew assembleRelease
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v1
+      - name: Sign Apk
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
         with:
-          name: apk
-          path: app/build/outputs/apk/release/app-release-unsigned.apk
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{secrets.KEY_BASE_64}}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASS }}
+          keyPassword: ${{ secrets.KEY_ALIAS_PASS }}
+
+      - name: Upload Signing APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: Signed APK
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
 
 
 
