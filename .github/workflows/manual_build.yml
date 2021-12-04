@@ -43,7 +43,8 @@ jobs:
       - name: Upload JKS
         uses: actions/upload-artifact@v2
         with:
-          filelocation: ${{ steps.write_file.outputs.filePath }}
+          name: Signed APK
+          path: ${{ steps.write_file.outputs.filePath }}
 
       #- name: Upload Signing APK
       #  uses: actions/upload-artifact@v2
