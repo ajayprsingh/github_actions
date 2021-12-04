@@ -23,22 +23,33 @@ jobs:
       - name: Assemble Release App
         run : ./gradlew assembleRelease
 
-      - name: Sign Apk
-        uses: r0adkll/sign-android-release@v1
-        id: sign_app
+      #- name: Sign Apk
+      #  uses: r0adkll/sign-android-release@v1
+      #  id: sign_app
+      #  with:
+      #    releaseDirectory: app/build/outputs/apk/release
+      #    signingKeyBase64: ${{secrets.KEY_BASE_64}}
+      #    alias: ${{ secrets.KEY_ALIAS }}
+      #    keyStorePassword: ${{ secrets.KEYSTORE_PASS }}
+      #    keyPassword: ${{ secrets.KEY_ALIAS_PASS }}
+      - name: Decode Key
+        id: write_file
+        uses: timheuer/base64-to-file@v1.1
         with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{secrets.KEY_BASE_64}}
-          alias: ${{ secrets.KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.KEYSTORE_PASS }}
-          keyPassword: ${{ secrets.KEY_ALIAS_PASS }}
+          fileName: 'keystore.jks'
+          encodedString: ${{ secrets.KEY_BASE_64 }}
 
-      - name: Upload Signing APK
+      - name: Upload JKS
         uses: actions/upload-artifact@v2
         with:
-          name: Signed APK
-          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+          filelocation: ${{ steps.write_file.outputs.filePath }}
 
+      #- name: Upload Signing APK
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: Signed APK
+      #    path: ${{steps.sign_app.outputs.signedReleaseFile}}
+#
 
 
 
