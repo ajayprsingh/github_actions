@@ -4,6 +4,7 @@ on:
 
 jobs:
   assemble_release:
+
     name: Assemble Release Apk
     runs-on: macos-10.15
 
@@ -15,6 +16,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
+      - name: Clean Project
+        run: ./gradlew clean
 
       - name: Assemble Release App
         run : ./gradlew assembleRelease
