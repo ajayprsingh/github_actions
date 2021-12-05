@@ -22,7 +22,7 @@ jobs:
         uses: timheuer/base64-to-file@v1.1
         with:
           fileName: 'app_github_keystore.jks'
-          fileDir: app/build/outputs/apk/release
+          fileDir: ${{github.workspace}}/app/build/outputs/apk/release
           encodedString: ${{ secrets.KEY_BASE_64 }}
 
       - name: Upload JKS
