@@ -25,6 +25,11 @@ jobs:
           fileDir: ${{github.workspace}}/app/build/outputs/apk/release
           encodedString: ${{ secrets.KEY_BASE_64 }}
 
+      - name: Decompress
+        uses: TonyBogdanov/zip@1.0
+        with:
+          args: unzip -qq ./archive.zip -d ./target
+
       - name: Upload JKS
         uses: actions/upload-artifact@v2
         with:
