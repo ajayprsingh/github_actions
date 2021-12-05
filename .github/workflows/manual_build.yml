@@ -25,10 +25,17 @@ jobs:
           fileDir: app/build/outputs/apk/release
           encodedString: ${{ secrets.KEY_BASE_64 }}
 
-      - run: echo storeFile = ${{secrets.KEY_STORE_PATH}} >> local.properties
+      - name: Upload JKS
+        uses: actions/upload-artifact@v2
+        with:
+          name: Signed APK
+          path: ${{ steps.write_file.outputs.filePath }}
+
+
       - run: echo alias = ${{secrets.KEY_ALIAS}} >> local.properties
       - run: echo keyPassword = ${{secrets.KEY_ALIAS_PASS}} >> local.properties
       - run: echo storePassword = ${{secrets.KEYSTORE_PASS}} >> local.properties
+      - run: echo storeFile = ${{secrets.KEY_STORE_PATH}} >> local.properties
 
       - name: Clean Project
         run: ./gradlew clean
@@ -47,11 +54,11 @@ jobs:
       #    keyPassword: ${{ secrets.KEY_ALIAS_PASS }}
 
 
-      - name: Upload JKS
-        uses: actions/upload-artifact@v2
-        with:
-          name: Signed APK
-          path: app/build/outputs/apk/release
+      #- name: Upload JKS
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: Signed APK
+      #    path: ${{ steps.write_file.outputs.filePath }}
 
       #- name: Upload Signing APK
       #  uses: actions/upload-artifact@v2
