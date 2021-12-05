@@ -3,8 +3,21 @@ plugins {
     id 'kotlin-android'
 }
 
+def keyStorePropertiesFile = rootProject.file("local.properties")
+def keyStoreProperties = new Properties()
+keyStoreProperties.load(new FileInputStream(keyStorePropertiesFile))
+
 android {
     compileSdk 31
+
+    signingConfigs {
+        release {
+            storeFile = file(keyStoreProperties['storeFile'])
+            storePassword = keyStoreProperties['storePassword']
+            keyAlias = keyStoreProperties['alias']
+            keyPassword = keyStoreProperties['keyPassword']
+        }
+    }
 
     defaultConfig {
         applicationId "com.appwork.githubactions"
@@ -12,12 +25,12 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
-
+        signingConfig signingConfigs.release
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        debug{
+        debug {
             minifyEnabled false
             debuggable true
             shrinkResources false
@@ -26,9 +39,10 @@ android {
             minifyEnabled true
             debuggable false
             shrinkResources true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        stage{
+        stage {
             minifyEnabled true
             debuggable false
             shrinkResources true
