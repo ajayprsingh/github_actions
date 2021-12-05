@@ -41,7 +41,7 @@ jobs:
         run: ./gradlew clean
 
       - name: Assemble Release App
-        run : ./gradlew assembleRelease
+        run : ./gradlew assembleRelease --stacktrace
 
       #- name: Sign Apk
       #  uses: r0adkll/sign-android-release@v1
